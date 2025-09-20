@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedX - AI Chest X-Ray Diagnostic System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Floating particles background -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header glass-effect">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__brand">
+                    <i class="fas fa-heartbeat header__icon pulse-animation"></i>
+                    <h1 class="header__title">MedX</h1>
+                    <span class="header__subtitle">Advanced AI Diagnostics</span>
+                </div>
+                <div class="header__actions">
+                    <button class="btn btn--outline btn--sm" id="historyBtn">
+                        <i class="fas fa-history"></i>
+                        History
+                    </button>
+                    <div class="status status--success">
+                        <i class="fas fa-shield-alt"></i>
+                        HIPAA Compliant
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome fade-in-section" id="welcomeSection">
+                <div class="welcome__content">
+                    <h2 class="welcome__title gradient-text">Next-Generation Chest X-Ray Analysis</h2>
+                    <p class="welcome__description">
+                        Experience the future of medical imaging with our AI-powered diagnostic system. 
+                        Upload your chest X-ray for comprehensive analysis with confidence scores and detailed findings.
+                    </p>
+                    <div class="welcome__features">
+                        <div class="feature glass-card">
+                            <i class="fas fa-brain feature__icon"></i>
+                            <span>Deep Learning AI</span>
+                        </div>
+                        <div class="feature glass-card">
+                            <i class="fas fa-eye feature__icon"></i>
+                            <span>Visual Heatmaps</span>
+                        </div>
+                        <div class="feature glass-card">
+                            <i class="fas fa-chart-line feature__icon"></i>
+                            <span>Risk Assessment</span>
+                        </div>
+                        <div class="feature glass-card">
+                            <i class="fas fa-file-medical feature__icon"></i>
+                            <span>PDF Reports</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Mode Selection -->
+            <section class="mode-selection hidden" id="modeSelection">
+                <div class="card glass-card">
+                    <div class="card__header">
+                        <h3><i class="fas fa-cogs"></i> Select Analysis Mode</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="mode-grid">
+                            <div class="mode-option" data-mode="quick">
+                                <div class="mode-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h4>Quick Scan</h4>
+                                <p>Fast analysis for common conditions</p>
+                                <div class="mode-duration">~30 seconds</div>
+                            </div>
+                            <div class="mode-option mode-option--recommended" data-mode="deep">
+                                <div class="mode-icon">
+                                    <i class="fas fa-magnifying-glass"></i>
+                                </div>
+                                <h4>Deep Analysis</h4>
+                                <p>Comprehensive examination</p>
+                                <div class="mode-duration">~60 seconds</div>
+                                <span class="recommended-badge">Recommended</span>
+                            </div>
+                            <div class="mode-option" data-mode="research">
+                                <div class="mode-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <h4>Research Mode</h4>
+                                <p>Academic-level analysis</p>
+                                <div class="mode-duration">~90 seconds</div>
+                            </div>
+                        </div>
+                        <div class="mode-actions">
+                            <button class="btn btn--outline" id="backToUpload">
+                                <i class="fas fa-arrow-left"></i>
+                                Back to Upload
+                            </button>
+                            <button class="btn btn--primary" id="startAnalysis" disabled>
+                                <i class="fas fa-play"></i>
+                                Start Analysis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="card glass-card upload-card">
+                    <div class="card__body">
+                        <div class="upload-area" id="uploadArea">
+                            <!-- Initial Upload State -->
+                            <div class="upload-area__content" id="uploadContent">
+                                <div class="upload-area__icon floating-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h3 class="upload-area__title">Upload Chest X-Ray Image</h3>
+                                <p class="upload-area__description">
+                                    Drag and drop your X-ray image here, or click to select a file
+                                </p>
+                                <button type="button" class="btn btn--primary btn-hover-effect" id="selectFileBtn">
+                                    <i class="fas fa-folder-open"></i>
+                                    Select File
+                                </button>
+                                <input type="file" id="fileInput" accept="image/*" class="upload-area__input">
+                                <div class="upload-area__supported">
+                                    <i class="fas fa-info-circle"></i>
+                                    Supported: JPEG, PNG, DICOM • Max size: 10MB
+                                </div>
+                            </div>
+                            
+                            <!-- Loading State -->
+                            <div class="upload-area__loading hidden" id="loadingState">
+                                <div class="loading-container">
+                                    <div class="medical-loader">
+                                        <div class="loader-pulse"></div>
+                                        <div class="loader-cross">
+                                            <div class="cross-vertical"></div>
+                                            <div class="cross-horizontal"></div>
+                                        </div>
+                                    </div>
+                                    <h3 id="loadingTitle">Analyzing X-Ray Image...</h3>
+                                    <p id="loadingSubtitle">Our AI is examining the image for potential findings</p>
+                                    <div class="analysis-steps" id="analysisSteps">
+                                        <div class="step" id="step1">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Image preprocessing</span>
+                                        </div>
+                                        <div class="step" id="step2">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                            <span>AI model inference</span>
+                                        </div>
+                                        <div class="step" id="step3">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Result compilation</span>
+                                        </div>
+                                        <div class="step" id="step4">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Report generation</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar__fill" id="progressBar"></div>
+                                        </div>
+                                        <div class="progress-text">
+                                            <span id="progressPercentage">0%</span>
+                                            <span id="progressETA">Estimating time...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section hidden" id="resultsSection">
+                <div class="results-header">
+                    <h2 class="results-title">
+                        <i class="fas fa-stethoscope"></i>
+                        Diagnostic Report
+                    </h2>
+                    <div class="results-actions">
+                        <button class="btn btn--outline btn--sm floating-btn" id="exportBtn">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                        <button class="btn btn--secondary btn--sm" id="saveAnalysisBtn">
+                            <i class="fas fa-save"></i>
+                            Save
+                        </button>
+                        <button class="btn btn--primary btn--sm" id="newAnalysisBtn">
+                            <i class="fas fa-plus"></i>
+                            New Analysis
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Risk Assessment Summary -->
+                <div class="card glass-card risk-assessment">
+                    <div class="card__body">
+                        <div class="risk-header">
+                            <h3><i class="fas fa-shield-alt"></i> Risk Assessment</h3>
+                            <div class="risk-level" id="riskLevel">
+                                <span class="risk-indicator"></span>
+                                <span class="risk-text">Analyzing...</span>
+                            </div>
+                        </div>
+                        <div class="risk-summary" id="riskSummary">
+                            Comprehensive analysis in progress...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Image Analysis -->
+                    <div class="card glass-card results-images">
+                        <div class="card__header">
+                            <h3>
+                                <i class="fas fa-images"></i>
+                                Image Analysis
+                            </h3>
+                            <div class="image-controls">
+                                <button class="btn btn--outline btn--sm" id="toggleHeatmap">
+                                    <i class="fas fa-layer-group"></i>
+                                    Toggle Heatmap
+                                </button>
+                                <button class="btn btn--outline btn--sm" id="zoomImage">
+                                    <i class="fas fa-search-plus"></i>
+                                    Zoom
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div class="image-viewer" id="imageViewer">
+                                <div class="image-container" id="imageContainer">
+                                    <img id="analysisImage" alt="X-Ray Analysis">
+                                    <div class="image-overlay hidden" id="heatmapOverlay">
+                                        <canvas id="heatmapCanvas"></canvas>
+                                    </div>
+                                </div>
+                                <div class="image-tools">
+                                    <div class="zoom-controls">
+                                        <button class="tool-btn" id="zoomIn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button class="tool-btn" id="zoomOut">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button class="tool-btn" id="resetZoom">
+                                            <i class="fas fa-expand-arrows-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="heatmap-legend">
+                                        <div class="legend-item">
+                                            <span class="legend-color legend-color--high"></span>
+                                            <span>High Attention</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-color legend-color--medium"></span>
+                                            <span>Medium</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-color legend-color--low"></span>
+                                            <span>Low</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Findings -->
+                    <div class="card glass-card results-findings">
+                        <div class="card__header">
+                            <h3>
+                                <i class="fas fa-clipboard-list"></i>
+                                Detailed Findings
+                            </h3>
+                            <div class="findings-filter">
+                                <select class="form-control" id="findingsFilter">
+                                    <option value="all">All Findings</option>
+                                    <option value="high">High Confidence</option>
+                                    <option value="medium">Medium Confidence</option>
+                                    <option value="low">Low Confidence</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div id="findingsList" class="findings-list">
+                                <!-- Findings will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Information -->
+                <div class="card glass-card results-info">
+                    <div class="card__body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h4>Important Notice</h4>
+                                    <p>This AI analysis is intended as a diagnostic aid only. Always consult with qualified medical professionals for proper diagnosis and treatment decisions.</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h4>Analysis Details</h4>
+                                    <p id="analysisDetails">Mode: Deep Analysis • Time: 3.2s • Model: v2.1</p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="info-content">
+                                    <h4>Data Security</h4>
+                                    <p>All uploads are encrypted and processed locally. No data is stored permanently.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Export Modal -->
+    <div class="modal hidden" id="exportModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content glass-card">
+            <div class="modal__header">
+                <h3><i class="fas fa-download"></i> Export Diagnostic Report</h3>
+                <button class="modal__close" id="closeExportModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="export-options">
+                    <div class="export-option" data-format="pdf">
+                        <div class="export-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="export-details">
+                            <h4>PDF Report</h4>
+                            <p>Comprehensive diagnostic report with images and findings</p>
+                        </div>
+                        <button class="btn btn--primary btn--sm">Download</button>
+                    </div>
+                    <div class="export-option" data-format="json">
+                        <div class="export-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="export-details">
+                            <h4>JSON Data</h4>
+                            <p>Structured data for system integration</p>
+                        </div>
+                        <button class="btn btn--primary btn--sm">Download</button>
+                    </div>
+                    <div class="export-option" data-format="dicom">
+                        <div class="export-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <div class="export-details">
+                            <h4>DICOM Format</h4>
+                            <p>Medical imaging standard with annotations</p>
+                        </div>
+                        <button class="btn btn--primary btn--sm">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal hidden" id="historyModal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content glass-card">
+            <div class="modal__header">
+                <h3><i class="fas fa-history"></i> Analysis History</h3>
+                <button class="modal__close" id="closeHistoryModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="history-list">
+                    <div class="history-item">
+                        <div class="history-icon">
+                            <i class="fas fa-x-ray"></i>
+                        </div>
+                        <div class="history-details">
+                            <h4>Chest X-Ray Analysis</h4>
+                            <p>Deep Analysis • Normal findings • 2 minutes ago</p>
+                        </div>
+                        <div class="history-actions">
+                            <button class="btn btn--outline btn--sm">View</button>
+                        </div>
+                    </div>
+                    <div class="history-empty">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No previous analyses found</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer glass-effect">
+        <div class="container">
+            <div class="footer__content">
+                <p>&copy; 2025 💙MedX AI Diagnostic System. All rights reserved.</p>
+                <div class="footer__links">
+                    <a href="#" target="_blank">Privacy Policy</a>
+                    <a href="#" target="_blank">Terms of Service</a>
+                    <a href="#" target="_blank">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
