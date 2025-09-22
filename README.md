@@ -1,49 +1,64 @@
-# 💙 MedX – Chest X-Ray Analyzer (Frontend)
+# 💙 MedX – Chest X-Ray Analyzer
 
-An AI-powered **Chest X-Ray Diagnostic Analyzer** built using **HTML, Tailwind CSS, and JavaScript**.
-This professional medical UI allows users to upload chest X-ray images, simulates AI-driven diagnostic results, and displays findings with confidence scores.
+**MedX** is an AI-powered chest X-ray diagnostic system with a **professional medical UI frontend** and a **Python AI backend**.
+It allows users to upload X-ray images, receive AI-driven diagnostic findings, and visualize results with confidence scores and Grad-CAM heatmaps.
 
 ---
 
 ## 🚀 Features
 
-* **Modern Medical UI/UX** – Blue-green healthtech theme
-* **Drag & Drop Upload** – With smooth visual feedback
-* **Progress Tracking** – Animated progress bar during analysis
-* **Diagnostic Findings** – Confidence scores & severity indicators
-* **Responsive Layout** – Optimized for desktop & mobile
+* **Professional Medical UI/UX** – Blue-green healthtech theme
+* **Drag & Drop Image Upload** – Smooth visual feedback
+* **Real-time Analysis Simulation** – Animated progress bar
+* **Comprehensive Diagnostic Findings** – Confidence scores & severity indicators
+* **Explainable AI (XAI)** – Grad-CAM heatmaps for detected conditions
+* **Responsive Design** – Optimized for desktop & mobile
 * **Error Handling** – Clear messages for invalid inputs
-* **Medical Disclaimer** – Responsible usage included
+* **Medical Disclaimer** – Informational use only
 
 ---
 
 ## 🖼️ Supported Conditions
 
-The system can simulate detection of **14+ chest conditions**, including:
+The AI backend can detect **14+ chest conditions**:
 
-* Pneumonia, Cardiomegaly, Effusion, Atelectasis, Consolidation, Edema
+* Atelectasis, Cardiomegaly, Consolidation, Edema, Effusion
 * Emphysema, Fibrosis, Hernia, Infiltration, Mass, Nodule
-* Pleural Thickening, Pneumothorax
+* Pleural Thickening, Pneumonia, Pneumothorax
 * ✅ *No Finding (Normal Case)*
 
 ---
 
 ## 📦 Tech Stack
 
-* **HTML5** – Structure & content
-* **Tailwind CSS** – Styling & responsive design
-* **JavaScript (ES6+)** – Interactivity & analysis simulation
+* **Frontend:** HTML5, Tailwind CSS, JavaScript
+* **Backend:** Python, TensorFlow / Keras (DenseNet121)
+* **Visualization:** OpenCV, Matplotlib (Grad-CAM)
+* **Optional:** Flask / FastAPI for API integration
+
+---
+ **Features**
+
+   * Drag & drop X-ray images
+   * Simulated AI analysis with animated progress bar
+   * Display of results with confidence levels
+
+---
+ **What it does**
+
+   * Loads your trained chest X-ray model
+   * Preprocesses the input image
+   * Predicts all conditions with probabilities
+   * Creates **visual Grad-CAM heatmaps** to highlight areas of interest
 
 ---
 
 ## 🛡️ Compliance & Disclaimer
 
-* **HIPAA Compliant UI Design** – No local storage of sensitive data
-* ⚠️ *Disclaimer:* This tool is **for educational/demo purposes only**.
-  It does not provide medical diagnosis. Always consult a licensed doctor.
+* **HIPAA-compliant UI design** – No local storage of sensitive patient data
+* ⚠️ *Medical Disclaimer:* The AI analysis is **informational only** and **cannot replace professional medical evaluation**
 
 ---
 
 ✨ **MedX – Together, we are safer.**
-
 
