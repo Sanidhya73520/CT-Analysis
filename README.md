@@ -1,8 +1,3 @@
-Got it 👍
-Since your project is a **Chest X-Ray Analyzer Frontend** using **HTML, CSS & JS (with TailwindCSS)**, here’s a **refined README.md** for your GitHub repo without React-specific parts:
-
----
-
 # 💙 MedX – Chest X-Ray Analyzer (Frontend)
 
 An AI-powered **Chest X-Ray Diagnostic Analyzer** built using **HTML, Tailwind CSS, and JavaScript**.
@@ -50,4 +45,5 @@ The system can simulate detection of **14+ chest conditions**, including:
 ---
 
 ✨ **MedX – Together, we are safer.**
+
 
